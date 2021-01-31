@@ -159,14 +159,14 @@ class _GroceriesMainPageState extends State<GroceriesMainPage> {
                 ),
                 Container(
                   height: categories.length <= 12
-                      ? 90 *
+                      ? 135 *
                           (categories.length / 4 +
                               (categories.length % 4 == 0 ? 0 : 1))
-                      : 270,
+                      : 540 ,
                   child: GridView.count(
                     physics: NeverScrollableScrollPhysics(),
                     padding: EdgeInsets.all(5),
-                    crossAxisCount: 4,
+                    crossAxisCount: 3,
                     children: List.generate(
                         categories.length <= 12 ? categories.length : 12,
                         (index) {

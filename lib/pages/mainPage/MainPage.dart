@@ -25,7 +25,6 @@ class _MainPageState extends State<MainPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     Provider.of<User>(context, listen: false).fetchUserId();
   }

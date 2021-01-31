@@ -34,6 +34,7 @@ dependencies:
   geolocator: ^6.1.7
   geocoding: ^1.0.5
   carousel_slider: ^2.3.1
+  upi_india: ^2.2.0+1
 
 dev_dependencies:
   flutter_test:

@@ -40,7 +40,6 @@ class _ProductListingPageState extends State<ProductListingPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getProducts();
   }

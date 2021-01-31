@@ -44,7 +44,6 @@ class _WishListPageState extends State<WishListPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getWishList();
   }

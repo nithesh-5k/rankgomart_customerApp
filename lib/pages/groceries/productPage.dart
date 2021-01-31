@@ -49,7 +49,6 @@ class _ProductPageState extends State<ProductPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getProduct();
   }

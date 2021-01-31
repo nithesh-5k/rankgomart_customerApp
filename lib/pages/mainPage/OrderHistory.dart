@@ -56,7 +56,6 @@ class _OrderHistoryState extends State<OrderHistory> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getOrders();
   }

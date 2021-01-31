@@ -12,6 +12,7 @@ import 'package:mart/provider/gps.dart';
 import 'package:mart/provider/user.dart';
 import 'package:mart/services/request.dart';
 import 'package:provider/provider.dart';
+import 'package:upi_india/upi_india.dart';
 
 class OrderPage extends StatefulWidget {
   @override
@@ -24,6 +25,9 @@ class _OrderPageState extends State<OrderPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   int distance, distancePrice;
   bool flag = true;
+
+  UpiIndia _upiIndia = UpiIndia();
+  UpiResponse _transaction;
 
   Future<void> calculateDistance() async {
     distance =
@@ -42,7 +46,10 @@ class _OrderPageState extends State<OrderPage> {
     iconTheme: IconThemeData(color: Colors.blue),
   );
   Payment selected = Payment.cod;
-  bool placeOrderFlag = true, fakePlaceOrder = true, distanceRejected = false;
+  bool placeOrderFlag = true,
+      fakePlaceOrder = true,
+      distanceRejected = false,
+      callOnceFlag = false;
 
   //TODO
   bool forceFlag = true;
@@ -240,54 +247,54 @@ class _OrderPageState extends State<OrderPage> {
                                   ],
                                 ),
                               ),
-                              // SizedBox(
-                              //   height: 20,
-                              // ),
-                              // Container(
-                              //   width: MediaQuery.of(context).size.width - 40,
-                              //   padding: EdgeInsets.only(
-                              //       top: 20, left: 10, right: 10, bottom: 10),
-                              //   decoration: BoxDecoration(
-                              //       border: Border.all(color: Colors.grey),
-                              //       borderRadius: BorderRadius.circular(5)),
-                              //   child: Column(
-                              //     crossAxisAlignment: CrossAxisAlignment.start,
-                              //     children: [
-                              //       Text(
-                              //         "Payment options",
-                              //         style: kHeading,
-                              //       ),
-                              //       Row(
-                              //         children: [
-                              //           Radio(
-                              //             value: Payment.cod,
-                              //             groupValue: selected,
-                              //             onChanged: (Payment value) {
-                              //               setState(() {
-                              //                 selected = value;
-                              //               });
-                              //             },
-                              //           ),
-                              //           Text("Cash on delivery")
-                              //         ],
-                              //       ),
-                              //       Row(
-                              //         children: [
-                              //           Radio(
-                              //             value: Payment.gpay,
-                              //             groupValue: selected,
-                              //             onChanged: (Payment value) {
-                              //               setState(() {
-                              //                 selected = value;
-                              //               });
-                              //             },
-                              //           ),
-                              //           Text("Google pay")
-                              //         ],
-                              //       ),
-                              //     ],
-                              //   ),
-                              // ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Container(
+                                width: MediaQuery.of(context).size.width - 40,
+                                padding: EdgeInsets.only(
+                                    top: 20, left: 10, right: 10, bottom: 10),
+                                decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.grey),
+                                    borderRadius: BorderRadius.circular(5)),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Payment options",
+                                      style: kHeading,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Radio(
+                                          value: Payment.cod,
+                                          groupValue: selected,
+                                          onChanged: (Payment value) {
+                                            setState(() {
+                                              selected = value;
+                                            });
+                                          },
+                                        ),
+                                        Text("Cash on delivery")
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Radio(
+                                          value: Payment.gpay,
+                                          groupValue: selected,
+                                          onChanged: (Payment value) {
+                                            setState(() {
+                                              selected = value;
+                                            });
+                                          },
+                                        ),
+                                        Text("Google pay")
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
                               SizedBox(
                                 height: 20,
                               ),
@@ -358,60 +365,166 @@ class _OrderPageState extends State<OrderPage> {
                       ),
                     ),
                     Positioned(
-                        bottom: 0,
-                        child: GestureDetector(
-                          onTap: () {
-                            if (placeOrderFlag) {
-                              // if (userProvider.addressId == null) {
-                              //   _scaffoldKey.currentState.showSnackBar(SnackBar(
-                              //     content:
-                              //         Text("Please, select address to proceed"),
-                              //     duration: Duration(milliseconds: 500),
-                              //   ));
-                              // } else {
-                              setState(() {
-                                placeOrderFlag = false;
-                                fakePlaceOrder = false;
-                              });
+                      bottom: 0,
+                      child: GestureDetector(
+                        onTap: () {
+                          if (placeOrderFlag) {
+                            // if (userProvider.addressId == null) {
+                            //   _scaffoldKey.currentState.showSnackBar(SnackBar(
+                            //     content:
+                            //         Text("Please, select address to proceed"),
+                            //     duration: Duration(milliseconds: 500),
+                            //   ));
+                            // } else {
+                            setState(() {
+                              placeOrderFlag = false;
+                              fakePlaceOrder = false;
+                            });
+                            callOnceFlag = true;
+                            if (selected == Payment.gpay) {
+                              startTransaction();
+                            } else {
                               placeOrder(context);
-                              // }
                             }
-                          },
-                          child: Container(
-                            margin: EdgeInsets.only(bottom: 10),
-                            decoration: BoxDecoration(
-                                color: kBlue,
-                                borderRadius: BorderRadius.circular(5)),
-                            height: 50,
-                            width: MediaQuery.of(context).size.width - 40,
-                            child: Center(
-                              child: Stack(
-                                alignment: Alignment.center,
-                                children: [
-                                  Visibility(
-                                      visible: !fakePlaceOrder,
-                                      child: CircularProgressIndicator(
-                                        backgroundColor: Colors.black12,
-                                      )),
-                                  Text(
-                                    "Place your order",
-                                    style: TextStyle(
-                                        color: fakePlaceOrder
-                                            ? Colors.white
-                                            : Colors.grey,
-                                        fontSize: 16),
-                                  ),
-                                ],
-                              ),
+                            // }
+                          }
+                        },
+                        child: Container(
+                          margin: EdgeInsets.only(bottom: 10),
+                          decoration: BoxDecoration(
+                              color: kBlue,
+                              borderRadius: BorderRadius.circular(5)),
+                          height: 50,
+                          width: MediaQuery.of(context).size.width - 40,
+                          child: Center(
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                Visibility(
+                                    visible: !fakePlaceOrder,
+                                    child: CircularProgressIndicator(
+                                      backgroundColor: Colors.black12,
+                                    )),
+                                Text(
+                                  selected == Payment.gpay
+                                      ? "Pay and Place your order"
+                                      : "Place your order",
+                                  style: TextStyle(
+                                      color: fakePlaceOrder
+                                          ? Colors.white
+                                          : Colors.grey,
+                                      fontSize: 16),
+                                ),
+                              ],
                             ),
                           ),
-                        ))
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               );
   }
 
+  Future<void> startTransaction() async {
+    try {
+      _transaction = await initiateTransaction(UpiApp.googlePay);
+      _checkTxnStatus(_transaction.status);
+    } catch (e) {
+      _upiErrorHandler(e.runtimeType);
+    }
+  }
+
+  Future<UpiResponse> initiateTransaction(UpiApp app) async {
+    return _upiIndia.startTransaction(
+      app: UpiApp.googlePay,
+      receiverUpiId: "7708709733@okbizaxis",
+      receiverName: 'RankgoMart',
+      transactionRefId: 'Testing_UPI',
+      transactionNote: 'Thanks for shopping at RankgoMart',
+      amount: Provider.of<Cart>(context, listen: false).totalPrice() +
+          distancePrice,
+    );
+  }
+
+  void _upiErrorHandler(error) {
+    setState(() {
+      placeOrderFlag = true;
+      fakePlaceOrder = true;
+    });
+    switch (error) {
+      case UpiIndiaAppNotInstalledException:
+        _scaffoldKey.currentState.showSnackBar(SnackBar(
+          content: Text('Google Pay app not installed on device'),
+          duration: Duration(seconds: 2),
+        ));
+        break;
+      case UpiIndiaUserCancelledException:
+        _scaffoldKey.currentState.showSnackBar(SnackBar(
+          content: Text('You cancelled the transaction'),
+          duration: Duration(seconds: 2),
+        ));
+        break;
+      case UpiIndiaNullResponseException:
+        _scaffoldKey.currentState.showSnackBar(SnackBar(
+          content: Text('Google Pay app didn\'t return any response'),
+          duration: Duration(seconds: 2),
+        ));
+        break;
+      case UpiIndiaInvalidParametersException:
+        _scaffoldKey.currentState.showSnackBar(SnackBar(
+          content: Text('Google Pay app cannot handle the transaction'),
+          duration: Duration(seconds: 2),
+        ));
+        break;
+      default:
+        _scaffoldKey.currentState.showSnackBar(SnackBar(
+          content: Text('An Unknown error has occurred. Try again!!!'),
+          duration: Duration(seconds: 2),
+        ));
+    }
+  }
+
+  void _checkTxnStatus(String status) {
+    switch (status) {
+      case UpiPaymentStatus.SUCCESS:
+        placeOrder(context);
+        print('Transaction Successful');
+        break;
+      case UpiPaymentStatus.SUBMITTED:
+        print('Transaction Submitted');
+        //TODO check for pending status
+        break;
+      case UpiPaymentStatus.FAILURE:
+        setState(() {
+          placeOrderFlag = true;
+          fakePlaceOrder = true;
+        });
+        _scaffoldKey.currentState.showSnackBar(SnackBar(
+          content: Text('Transaction Failed. Try Again!!!'),
+          duration: Duration(seconds: 2),
+        ));
+        print('Transaction Failed');
+        break;
+      default:
+        setState(() {
+          placeOrderFlag = true;
+          fakePlaceOrder = true;
+        });
+        _scaffoldKey.currentState.showSnackBar(SnackBar(
+          content: Text('Received an Unknown transaction status. Try again!!!'),
+          duration: Duration(seconds: 2),
+        ));
+        print('Received an Unknown transaction status');
+    }
+  }
+
   Future<void> placeOrder(BuildContext context) async {
+    if (callOnceFlag) {
+      callOnceFlag = false;
+    } else {
+      return;
+    }
     var responseBody;
     Map<String, dynamic> body;
     var cartProvider = Provider.of<Cart>(context, listen: false);
@@ -445,13 +558,15 @@ class _OrderPageState extends State<OrderPage> {
         setState(() {
           fakePlaceOrder = true;
         });
-        cartProvider.clearCart();
         _scaffoldKey.currentState.showSnackBar(SnackBar(
           content: Text("Order placed!!!"),
           duration: Duration(seconds: 2),
         ));
-        Future.delayed(Duration(seconds: 2), () {
+        Future.delayed(Duration(seconds: 3), () {
           Navigator.popUntil(context, (route) => route.isFirst);
+          Future.delayed(Duration(milliseconds: 500), () {
+            cartProvider.clearCart();
+          });
         });
       }
     }
@@ -471,7 +586,8 @@ class _OrderPageState extends State<OrderPage> {
     }
     Map<String, dynamic> body = {
       "custom_data": "addpaymentdetails",
-      "transcation_no": "",
+      "transcation_no":
+          selected == Payment.gpay ? _transaction.transactionId : "",
       "orderCustomerRefId": userProvider.userId,
       "customerAddressRefId": [
         {
@@ -482,8 +598,8 @@ class _OrderPageState extends State<OrderPage> {
           "customerPincode": "630551"
         }
       ],
-      "paymentMode": "cod",
-      "paidStatus": "unpaid",
+      "paymentMode": selected == Payment.gpay ? "GooglePay" : "cod",
+      "paidStatus": selected == Payment.gpay ? "paid" : "unpaid",
       "totalCartAmount": cartProvider.totalPrice(),
       "orderDeliveryCharge": distancePrice.toString(),
       "totalOrderAmount": cartProvider.totalPrice() + distancePrice,
@@ -506,7 +622,8 @@ class _OrderPageState extends State<OrderPage> {
     }
     Map<String, dynamic> body = {
       "custom_data": "checkoutdetails",
-      "transcation_no": "",
+      "transcation_no":
+          selected == Payment.gpay ? _transaction.transactionId : "",
       "hotelRefId": cartProvider.id,
       "orderCustomerRefId": userProvider.userId,
       "customerAddressRefId": [
@@ -518,8 +635,8 @@ class _OrderPageState extends State<OrderPage> {
           "customerPincode": "630551"
         }
       ],
-      "paymentMode": "cod",
-      "paidStatus": "unpaid",
+      "paymentMode": selected == Payment.gpay ? "GooglePay" : "cod",
+      "paidStatus": selected == Payment.gpay ? "paid" : "unpaid",
       "totalCartAmount": cartProvider.totalPrice(),
       "orderDeliveryCharge": "",
       "totalOrderAmount": cartProvider.totalPrice(),
@@ -542,7 +659,8 @@ class _OrderPageState extends State<OrderPage> {
     }
     Map<String, dynamic> body = {
       "custom_data": "bakerycheckoutdetails",
-      "transcation_no": "",
+      "transcation_no":
+          selected == Payment.gpay ? _transaction.transactionId : "",
       "bakeryRefId": cartProvider.id,
       "orderCustomerRefId": userProvider.userId,
       "customerAddressRefId": [
@@ -554,8 +672,8 @@ class _OrderPageState extends State<OrderPage> {
           "customerPincode": "630551"
         }
       ],
-      "paymentMode": "cod",
-      "paidStatus": "unpaid",
+      "paymentMode": selected == Payment.gpay ? "GooglePay" : "cod",
+      "paidStatus": selected == Payment.gpay ? "paid" : "unpaid",
       "totalCartAmount": cartProvider.totalPrice(),
       "orderDeliveryCharge": "",
       "totalOrderAmount": cartProvider.totalPrice(),
