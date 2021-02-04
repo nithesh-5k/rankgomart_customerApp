@@ -6,6 +6,7 @@ import 'package:mart/pages/groceries/productPage.dart';
 import 'package:mart/provider/cart.dart';
 import 'package:mart/provider/gps.dart';
 import 'package:mart/provider/user.dart';
+import 'package:mart/services/dynamicLinkServices.dart';
 import 'package:mart/services/request.dart';
 import 'package:provider/provider.dart';
 
@@ -20,8 +21,8 @@ class ProductCard extends StatelessWidget {
         double.parse(product.salePrice).round();
     return InkWell(
       onTap: () {
-        Navigator.push(context,
-            CupertinoPageRoute(builder: (context) => ProductPage(product.id)));
+        Navigator.pushNamed(context, ProductPage.routeName,
+            arguments: product.id);
       },
       child: Container(
         height: 310,
@@ -122,15 +123,21 @@ class ProductCard extends StatelessWidget {
                     },
                   ),
                 ),
-                // Container(
-                //     height: 40,
-                //     width: 40,
-                //     decoration: BoxDecoration(
-                //         color: kGreen, borderRadius: BorderRadius.circular(5)),
-                //     child: Icon(
-                //       Icons.share,
-                //       color: Colors.white,
-                //     ))
+                GestureDetector(
+                  onTap: () {
+                    DynamicLinkService.shareProduct(product);
+                  },
+                  child: Container(
+                      height: 40,
+                      width: 40,
+                      decoration: BoxDecoration(
+                          color: kGreen,
+                          borderRadius: BorderRadius.circular(5)),
+                      child: Icon(
+                        Icons.share,
+                        color: Colors.white,
+                      )),
+                )
               ],
             )
           ],

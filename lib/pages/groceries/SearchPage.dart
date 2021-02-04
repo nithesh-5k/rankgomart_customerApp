@@ -85,11 +85,9 @@ class _SearchPageState extends State<SearchPage> {
                           itemBuilder: (context, index) {
                             return GestureDetector(
                               onTap: () {
-                                Navigator.push(
-                                    context,
-                                    CupertinoPageRoute(
-                                        builder: (context) => ProductPage(
-                                            searchItems[index].id)));
+                                Navigator.pushNamed(
+                                    context, ProductPage.routeName,
+                                    arguments: searchItems[index].id);
                               },
                               child: Container(
                                 child: Column(

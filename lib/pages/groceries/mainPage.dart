@@ -162,7 +162,7 @@ class _GroceriesMainPageState extends State<GroceriesMainPage> {
                       ? 135 *
                           (categories.length / 4 +
                               (categories.length % 4 == 0 ? 0 : 1))
-                      : 540 ,
+                      : 540,
                   child: GridView.count(
                     physics: NeverScrollableScrollPhysics(),
                     padding: EdgeInsets.all(5),
@@ -206,11 +206,8 @@ class _GroceriesMainPageState extends State<GroceriesMainPage> {
                 ),
                 InkWell(
                   onTap: () {
-                    Navigator.push(
-                        context,
-                        CupertinoPageRoute(
-                            builder: (context) =>
-                                ProductPage(bannerImages[0].id)));
+                    Navigator.pushNamed(context, ProductPage.routeName,
+                        arguments: bannerImages[0].id);
                   },
                   child: Container(
                       padding: EdgeInsets.all(10),
@@ -292,11 +289,8 @@ class _GroceriesMainPageState extends State<GroceriesMainPage> {
                   ),
                 InkWell(
                   onTap: () {
-                    Navigator.push(
-                        context,
-                        CupertinoPageRoute(
-                            builder: (context) =>
-                                ProductPage(bannerImages[1].id)));
+                    Navigator.pushNamed(context, ProductPage.routeName,
+                        arguments: bannerImages[1].id);
                   },
                   child: Container(
                       padding: EdgeInsets.all(10),

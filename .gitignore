@@ -41,3 +41,4 @@ app.*.symbols
 app.*.map.json
 
 /lib/apiLink.dart
+/android/app/google-services.json

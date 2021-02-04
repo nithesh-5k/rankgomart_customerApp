@@ -68,11 +68,8 @@ class _WishListPageState extends State<WishListPage> {
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () {
-                        Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                                builder: (context) =>
-                                    ProductPage(wishlist[index].productId)));
+                        Navigator.pushNamed(context, ProductPage.routeName,
+                            arguments: wishlist[index].productId);
                       },
                       child: Container(
                         margin:

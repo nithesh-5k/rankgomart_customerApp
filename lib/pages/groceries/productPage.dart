@@ -13,9 +13,7 @@ import 'package:mart/services/request.dart';
 import 'package:provider/provider.dart';
 
 class ProductPage extends StatefulWidget {
-  String id;
-
-  ProductPage(this.id);
+  static const routeName = '/productPage';
 
   @override
   _ProductPageState createState() => _ProductPageState();
@@ -29,10 +27,10 @@ class _ProductPageState extends State<ProductPage> {
 
   var responseBody;
 
-  Future<void> getProduct() async {
+  Future<void> getProduct(String id) async {
     Map<String, String> body = {
       "custom_data": "getsingleproduct",
-      "productId": widget.id
+      "productId": id
     };
     responseBody = await postRequest("API/homepage_api.php", body);
     if (responseBody['success'] == null ? false : responseBody['success']) {
@@ -42,7 +40,7 @@ class _ProductPageState extends State<ProductPage> {
       });
     } else {
       Future.delayed(Duration(milliseconds: 500), () {
-        getProduct();
+        getProduct(id);
       });
     }
   }
@@ -50,11 +48,14 @@ class _ProductPageState extends State<ProductPage> {
   @override
   void initState() {
     super.initState();
-    getProduct();
   }
 
   @override
   Widget build(BuildContext context) {
+    final String id = ModalRoute.of(context).settings.arguments;
+    if (flag) {
+      getProduct(id);
+    }
     int save = double.parse(flag ? "0" : product.mrpPrice).round() -
         double.parse(flag ? "0" : product.salePrice).round();
     AppBar bar =
@@ -131,7 +132,7 @@ class _ProductPageState extends State<ProductPage> {
                         ),
                       ),
                       Text(
-                        product.description,
+                        product.description ?? "",
                         style: TextStyle(
                           fontSize: 12,
                           color: Colors.black,

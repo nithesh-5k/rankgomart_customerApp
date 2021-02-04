@@ -35,6 +35,8 @@ dependencies:
   geocoding: ^1.0.5
   carousel_slider: ^2.3.1
   upi_india: ^2.2.0+1
+  firebase_dynamic_links: ^0.7.0+1
+  share: ^0.6.5+4
 
 dev_dependencies:
   flutter_test:
