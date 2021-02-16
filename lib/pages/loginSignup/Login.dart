@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mart/const.dart';
 import 'package:mart/customWidgets/CustomAppBar.dart';
+import 'package:mart/pages/loginSignup/ForgotPassword.dart';
 import 'package:mart/pages/loginSignup/SignUp.dart';
 import 'package:mart/provider/user.dart';
 import 'package:mart/services/request.dart';
@@ -85,6 +86,21 @@ class LoginScreen extends StatelessWidget {
                           "Login",
                           style: buttonHeading,
                         )),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) => ForgotPassword()));
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(5),
+                      child: Text(
+                        "Forgot Password?",
+                        style: TextStyle(color: kBlue),
+                      ),
+                    ),
                   ),
                 ],
               ),
