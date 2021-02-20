@@ -100,7 +100,7 @@ class _MainPageState extends State<MainPage> {
                 SizedBox(
                   width: 5,
                 ),
-                Expanded(child: menuItem("Order Meat", () {})),
+                // Expanded(child: menuItem("Order Meat", () {})),
               ],
             ),
           ),

@@ -109,7 +109,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                           checkOTP();
                         },
                         child: Text(
-                          "Change Password",
+                          "Submit",
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
