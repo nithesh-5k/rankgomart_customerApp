@@ -133,7 +133,7 @@ class CartPage extends StatelessWidget {
                                       ],
                                     ),
                                     Text(
-                                        "Price: ${((double.parse(cartProvider.cartProducts[index].salePrice) * cartProvider.quantity[index]) * 100).roundToDouble() / 100}"),
+                                        "Price: ${(double.parse(cartProvider.cartProducts[index].salePrice) * cartProvider.quantity[index]).toStringAsFixed(2)}"),
                                   ],
                                 ),
                               ),

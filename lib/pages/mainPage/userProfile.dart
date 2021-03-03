@@ -283,7 +283,7 @@ class AddAddress extends StatelessWidget {
       country = "100",
       pincode = "630551";
 
-  //TODO
+  //TODO : not used as of now
   bool flag = true;
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();

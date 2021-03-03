@@ -23,7 +23,6 @@ class _FilterPageState extends State<FilterPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _filter = widget.filter;
     min = _filter.changedMin;

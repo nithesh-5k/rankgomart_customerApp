@@ -51,8 +51,7 @@ class _OrderPageState extends State<OrderPage> {
       distanceRejected = false,
       callOnceFlag = false;
 
-  //TODO
-  bool forceFlag = true;
+  // bool forceFlag = true;
 
   @override
   Widget build(BuildContext context) {
@@ -60,17 +59,17 @@ class _OrderPageState extends State<OrderPage> {
     if (flag) {
       calculateDistance();
     } else {
-      if (forceFlag) {
-        if (distance <= 4) {
-          distancePrice = 0;
+      // if (forceFlag) {
+      if (distance <= 4) {
+        distancePrice = 0;
+      } else {
+        if (distance > 4 && distance <= 10) {
+          distancePrice = (distance - 4) * 10;
         } else {
-          if (distance > 4 && distance <= 10) {
-            distancePrice = (distance - 4) * 10;
-          } else {
-            distanceRejected = true;
-          }
+          distanceRejected = true;
         }
       }
+      // }
     }
     return distanceRejected
         ? Scaffold(
@@ -80,29 +79,29 @@ class _OrderPageState extends State<OrderPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        //TODO
-                        distancePrice = distance * 10;
-                        distanceRejected = false;
-                        forceFlag = false;
-                      });
-                    },
-                    child: Container(
-                      width: MediaQuery.of(context).size.width - 40,
-                      padding: EdgeInsets.only(
-                          top: 30, left: 10, right: 10, bottom: 30),
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey),
-                          borderRadius: BorderRadius.circular(5)),
-                      child: Text(
-                        "Sorry! This order cannot be placed at this location.",
-                        style: kHeading,
-                        textAlign: TextAlign.center,
-                      ),
+                  // GestureDetector(
+                  //   onTap: () {
+                  //     setState(() {
+                  //       distancePrice = distance * 10;
+                  //       distanceRejected = false;
+                  //       forceFlag = false;
+                  //     });
+                  //   },
+                  //   child:
+                  Container(
+                    width: MediaQuery.of(context).size.width - 40,
+                    padding: EdgeInsets.only(
+                        top: 30, left: 10, right: 10, bottom: 30),
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey),
+                        borderRadius: BorderRadius.circular(5)),
+                    child: Text(
+                      "Sorry! This order cannot be placed at this location.",
+                      style: kHeading,
+                      textAlign: TextAlign.center,
                     ),
                   ),
+                  // ),
                   SizedBox(
                     height: 10,
                   ),

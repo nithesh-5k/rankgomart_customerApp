@@ -159,9 +159,9 @@ class _GroceriesMainPageState extends State<GroceriesMainPage> {
                 ),
                 Container(
                   height: categories.length <= 12
-                      ? 135 *
-                          (categories.length / 4 +
-                              (categories.length % 4 == 0 ? 0 : 1))
+                      ? (120 *
+                          ((categories.length / 3).floorToDouble() +
+                              (categories.length % 3 == 0 ? 0 : 1)))
                       : 540,
                   child: GridView.count(
                     physics: NeverScrollableScrollPhysics(),
@@ -183,9 +183,7 @@ class _GroceriesMainPageState extends State<GroceriesMainPage> {
                       Navigator.push(
                           context,
                           CupertinoPageRoute(
-                            builder: (context) => AllCategories(
-                              categories: categories,
-                            ),
+                            builder: (context) => AllCategories(),
                           ));
                     },
                     child: Container(

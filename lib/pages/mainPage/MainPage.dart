@@ -36,16 +36,16 @@ class _MainPageState extends State<MainPage> {
         backgroundColor: Colors.white,
         iconTheme: new IconThemeData(color: Colors.blue),
         actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.notifications,
-              color: kLightBlack,
-            ),
-            onPressed: () {
-              print(Provider.of<User>(context, listen: false).userId);
-              //TODO:
-            },
-          ),
+          // IconButton(
+          //   icon: Icon(
+          //     Icons.notifications,
+          //     color: kLightBlack,
+          //   ),
+          //   onPressed: () {
+          //     print(Provider.of<User>(context, listen: false).userId);
+          //     //TODO: not required as of now
+          //   },
+          // ),
           IconButton(
             icon: Icon(
               Icons.person,

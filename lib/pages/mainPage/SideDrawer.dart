@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:mart/const.dart';
+import 'package:mart/pages/groceries/AllCategories.dart';
+import 'package:mart/pages/groceries/OfferZone.dart';
 import 'package:mart/pages/mainPage/OrderHistory.dart';
 import 'package:mart/pages/mainPage/WishListPage.dart';
 import 'package:mart/pages/mainPage/cartPage.dart';
@@ -36,7 +38,6 @@ class SideDrawer extends StatelessWidget {
                       DrawerOption(
                         onTap: () {
                           Navigator.pop(context);
-                          //TODO
                         },
                         icon: Icons.home_rounded,
                         text: "Home",
@@ -44,7 +45,11 @@ class SideDrawer extends StatelessWidget {
                       DrawerOption(
                         onTap: () {
                           Navigator.pop(context);
-                          //TODO
+                          Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                builder: (context) => AllCategories(),
+                              ));
                         },
                         icon: Icons.apps,
                         text: "All Categories",
@@ -52,19 +57,22 @@ class SideDrawer extends StatelessWidget {
                       DrawerOption(
                         onTap: () {
                           Navigator.pop(context);
-                          //TODO
+                          Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                builder: (context) => OfferZone(),
+                              ));
                         },
                         icon: Icons.bolt,
                         text: "Offer Zone",
                       ),
-                      DrawerOption(
-                        onTap: () {
-                          Navigator.pop(context);
-                          //TODO
-                        },
-                        icon: Icons.menu_book,
-                        text: "Products",
-                      ),
+                      // DrawerOption(
+                      //   onTap: () {
+                      //     Navigator.pop(context);
+                      //   },
+                      //   icon: Icons.menu_book,
+                      //   text: "Products",
+                      // ),
                       DrawerOption(
                         onTap: () {
                           Navigator.pop(context);
@@ -100,7 +108,6 @@ class SideDrawer extends StatelessWidget {
                                 CupertinoPageRoute(
                                     builder: (context) => WishListPage()));
                           }
-                          //TODO
                         },
                         icon: Icons.favorite_outlined,
                         text: "My Wishlist",
@@ -127,50 +134,45 @@ class SideDrawer extends StatelessWidget {
                         icon: Icons.person,
                         text: "My Account",
                       ),
-                      DrawerOption(
-                        onTap: () {
-                          Navigator.pop(context);
-                          //TODO
-                        },
-                        icon: Icons.notifications,
-                        text: "Notifications",
-                      ),
-                      Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 4, vertical: 15),
-                        child: Divider(
-                          thickness: 2,
-                          height: 0,
-                        ),
-                      ),
-                      DrawerOption(
-                        onTap: () {
-                          Navigator.pop(context);
-                          //TODO
-                        },
-                        text: "Notification Preference",
-                      ),
-                      DrawerOption(
-                        onTap: () {
-                          Navigator.pop(context);
-                          //TODO
-                        },
-                        text: "Help Center",
-                      ),
-                      DrawerOption(
-                        onTap: () {
-                          Navigator.pop(context);
-                          //TODO
-                        },
-                        text: "Privacy Policy",
-                      ),
-                      DrawerOption(
-                        onTap: () {
-                          Navigator.pop(context);
-                          //TODO
-                        },
-                        text: "Legal",
-                      ),
+                      // DrawerOption(
+                      //   onTap: () {
+                      //     Navigator.pop(context);
+                      //   },
+                      //   icon: Icons.notifications,
+                      //   text: "Notifications",
+                      // ),
+                      // Padding(
+                      //   padding:
+                      //       EdgeInsets.symmetric(horizontal: 4, vertical: 15),
+                      //   child: Divider(
+                      //     thickness: 2,
+                      //     height: 0,
+                      //   ),
+                      // ),
+                      // DrawerOption(
+                      //   onTap: () {
+                      //     Navigator.pop(context);
+                      //   },
+                      //   text: "Notification Preference",
+                      // ),
+                      // DrawerOption(
+                      //   onTap: () {
+                      //     Navigator.pop(context);
+                      //   },
+                      //   text: "Help Center",
+                      // ),
+                      // DrawerOption(
+                      //   onTap: () {
+                      //     Navigator.pop(context);
+                      //   },
+                      //   text: "Privacy Policy",
+                      // ),
+                      // DrawerOption(
+                      //   onTap: () {
+                      //     Navigator.pop(context);
+                      //   },
+                      //   text: "Legal",
+                      // ),
                       SizedBox(
                         height: 10,
                       )

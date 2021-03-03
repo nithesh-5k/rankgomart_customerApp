@@ -66,12 +66,16 @@ class _OrderHistoryState extends State<OrderHistory> {
       appBar: CustomAppBar(title: "Order History", context: context),
       body: responseBody == null
           ? Center(child: CircularProgressIndicator())
-          : ListView.builder(
-              itemBuilder: (context, index) {
-                return orderCard(orders[index], context);
-              },
-              itemCount: orders.length,
-            ),
+          : orders.length == 0
+              ? Center(
+                  child: Text("No order history"),
+                )
+              : ListView.builder(
+                  itemBuilder: (context, index) {
+                    return orderCard(orders[index], context);
+                  },
+                  itemCount: orders.length,
+                ),
     );
   }
 
