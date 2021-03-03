@@ -10,8 +10,6 @@ import 'package:mart/pages/food/hotelMainPage.dart';
 import 'package:mart/pages/groceries/mainPage.dart';
 import 'package:mart/pages/mainPage/SideDrawer.dart';
 import 'package:mart/pages/mainPage/userProfile.dart';
-import 'package:mart/provider/user.dart';
-import 'package:provider/provider.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -22,12 +20,6 @@ enum Type { food, meat, cake, grocery }
 
 class _MainPageState extends State<MainPage> {
   Type currentType = Type.grocery;
-
-  @override
-  void initState() {
-    super.initState();
-    Provider.of<User>(context, listen: false).fetchUserId();
-  }
 
   @override
   Widget build(BuildContext context) {

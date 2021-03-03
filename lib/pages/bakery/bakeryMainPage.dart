@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mart/const.dart';
 import 'package:mart/customWidgets/BakeryCard.dart';
 import 'package:mart/model/Bakery.dart';
+import 'package:mart/services/getData.dart';
 import 'package:mart/services/request.dart';
 
 class BakeryMainPage extends StatefulWidget {
@@ -30,6 +32,13 @@ class _BakeryMainPageState extends State<BakeryMainPage> {
   @override
   void initState() {
     super.initState();
+    initialCalls();
+  }
+
+  Future<void> initialCalls() async {
+    if (BASE_URL == null) {
+      await Data.getAPIData();
+    }
     getBakeries();
   }
 

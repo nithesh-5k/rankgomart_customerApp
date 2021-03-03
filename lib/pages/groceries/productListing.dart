@@ -8,6 +8,7 @@ import 'package:mart/model/Category.dart';
 import 'package:mart/model/Filter.dart';
 import 'package:mart/model/Item/GroceryItem.dart';
 import 'package:mart/pages/groceries/FilterPage.dart';
+import 'package:mart/services/getData.dart';
 import 'package:mart/services/request.dart';
 
 class ProductListingPage extends StatefulWidget {
@@ -35,7 +36,7 @@ class _ProductListingPageState extends State<ProductListingPage> {
       "maximumPrice": _filter.changedMax.toString(),
       "searchKeyword": "",
       "lastId": _filter.lastId,
-      "queryLimit": "20"
+      "queryLimit": Data.paginationLimit
     };
     responseBody = await postRequest("API/homepage_api.php", body);
     if (responseBody['success'] == null ? false : responseBody['success']) {
@@ -58,7 +59,7 @@ class _ProductListingPageState extends State<ProductListingPage> {
       "custom_data": "getcategoryproductlist",
       "categoryId": widget.category.categoryId,
       "lastId": "0",
-      "queryLimit": "20"
+      "queryLimit": Data.paginationLimit
     };
     responseBody1 = await postRequest("API/homepage_api.php", body);
     if (responseBody1['success'] == null ? false : responseBody1['success']) {

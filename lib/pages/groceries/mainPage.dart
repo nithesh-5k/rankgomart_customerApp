@@ -10,6 +10,8 @@ import 'package:mart/pages/groceries/AllCategories.dart';
 import 'package:mart/pages/groceries/SearchPage.dart';
 import 'package:mart/pages/groceries/productPage.dart';
 import 'package:mart/provider/gps.dart';
+import 'package:mart/provider/user.dart';
+import 'package:mart/services/getData.dart';
 import 'package:mart/services/request.dart';
 import 'package:provider/provider.dart';
 
@@ -68,8 +70,15 @@ class _GroceriesMainPageState extends State<GroceriesMainPage> {
 
   Future<void> getProducts(String categoryId) async {
     Map<String, String> body = {
-      "custom_data": "getcategoryproductlist",
-      "categoryId": categoryId
+      "custom_data": "filterdata",
+      "categoryId": categoryId,
+      "subcategoryId": "",
+      "brandId": "",
+      "minimumPrice": "",
+      "maximumPrice": "",
+      "searchKeyword": "",
+      "lastId": "0",
+      "queryLimit": "20"
     };
     responseBody = await postRequestForList("API/homepage_api.php", body);
     if (responseBody['success'] == null ? false : responseBody['success']) {
@@ -101,9 +110,17 @@ class _GroceriesMainPageState extends State<GroceriesMainPage> {
   @override
   void initState() {
     super.initState();
+    initialCalls();
+  }
+
+  Future<void> initialCalls() async {
+    if (BASE_URL == null) {
+      await Data.getAPIData();
+    }
     getCategories();
     getCarouselData();
     getBanner();
+    Provider.of<User>(context, listen: false).fetchUserId();
   }
 
   @override

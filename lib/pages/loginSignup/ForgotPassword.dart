@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:mart/const.dart';
 import 'package:mart/customWidgets/CustomAppBar.dart';
+import 'package:mart/services/getData.dart';
 import 'package:mart/services/request.dart';
 
 class ForgotPassword extends StatefulWidget {
@@ -48,7 +49,9 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     Container(
                       width: MediaQuery.of(context).size.width,
                       child: Text(
-                        "Enter your email:",
+                        Data.otp != "email"
+                            ? "Enter your mobile number:"
+                            : "Enter your email:",
                         style: TextStyle(fontSize: 15),
                       ),
                     ),
@@ -58,7 +61,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                       },
                       decoration: InputDecoration(
                         // border: OutlineInputBorder(),
-                        labelText: 'Email',
+                        labelText:
+                            Data.otp != "email" ? "Mobile number" : 'Email',
                       ),
                     ),
                     Padding(
@@ -87,7 +91,9 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     Container(
                       width: MediaQuery.of(context).size.width,
                       child: Text(
-                        "Enter OTP from email:",
+                        Data.otp != "email"
+                            ? "Enter OTP from mobile number:"
+                            : "Enter OTP from email:",
                         style: TextStyle(fontSize: 15),
                       ),
                     ),

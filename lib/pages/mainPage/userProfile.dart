@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mart/const.dart';
 import 'package:mart/customWidgets/CustomAppBar.dart';
 import 'package:mart/pages/loginSignup/Login.dart';
+import 'package:mart/pages/mainPage/EditName.dart';
 import 'package:mart/provider/user.dart';
 import 'package:mart/services/request.dart';
 import 'package:provider/provider.dart';
@@ -71,6 +72,25 @@ class _UserProfileState extends State<UserProfile> {
                     customContainer(
                         heading: "Email",
                         text: userProvider.user.customerEmailId),
+                    SizedBox(
+                      height: 2,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                                builder: (context) => EditName()));
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(8),
+                        color: Colors.transparent,
+                        child: Text(
+                          "Edit user name",
+                          style: TextStyle(color: kBlue),
+                        ),
+                      ),
+                    ),
                     // SizedBox(
                     //   height: 10,
                     // ),
@@ -133,7 +153,7 @@ class _UserProfileState extends State<UserProfile> {
                     //   ),
                     // ),
                     SizedBox(
-                      height: 30,
+                      height: 2,
                     ),
                     FlatButton(
                       onPressed: () {

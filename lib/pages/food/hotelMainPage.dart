@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mart/const.dart';
 import 'package:mart/customWidgets/HotelCard.dart';
 import 'package:mart/model/Hotel.dart';
+import 'package:mart/services/getData.dart';
 import 'package:mart/services/request.dart';
 
 class HotelMainPage extends StatefulWidget {
@@ -30,6 +32,13 @@ class _HotelMainPageState extends State<HotelMainPage> {
   @override
   void initState() {
     super.initState();
+    initialCalls();
+  }
+
+  Future<void> initialCalls() async {
+    if (BASE_URL == null) {
+      await Data.getAPIData();
+    }
     getHotels();
   }
 

@@ -10,6 +10,7 @@ import 'package:mart/pages/mainPage/userProfile.dart';
 import 'package:mart/provider/cart.dart';
 import 'package:mart/provider/gps.dart';
 import 'package:mart/provider/user.dart';
+import 'package:mart/services/getData.dart';
 import 'package:mart/services/request.dart';
 import 'package:provider/provider.dart';
 import 'package:upi_india/upi_india.dart';
@@ -60,11 +61,12 @@ class _OrderPageState extends State<OrderPage> {
       calculateDistance();
     } else {
       // if (forceFlag) {
-      if (distance <= 4) {
+      if (distance <= int.parse(Data.minKm)) {
         distancePrice = 0;
       } else {
-        if (distance > 4 && distance <= 10) {
-          distancePrice = (distance - 4) * 10;
+        if (distance > int.parse(Data.minKm) && distance <= 10) {
+          distancePrice = (distance - int.parse(Data.minKm)) *
+              int.parse(Data.distancePrice);
         } else {
           distanceRejected = true;
         }

@@ -1,3 +1,5 @@
+import 'package:mart/services/getData.dart';
+
 class Brand {
   Brand({this.id, this.name});
 
@@ -30,7 +32,7 @@ List<SubCategory> subCategoriesFromJson(responseBody) =>
 class Filter {
   double min = 0, max = 1000000, changedMin = 0, changedMax = 1000000;
   int totalCount;
-  String lastId = "0";
+  String lastId = Data.paginationStart;
   String subCategoryId = "", brandId = "";
   List<int> brandCheck = [], subCategoryCheck = [];
 
