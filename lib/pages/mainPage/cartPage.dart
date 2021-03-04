@@ -36,7 +36,7 @@ class CartPage extends StatelessWidget {
                         Container(
                           padding: EdgeInsets.all(10),
                           width: MediaQuery.of(context).size.width,
-                          height: 130,
+                          height: 140,
                           child: Row(
                             children: [
                               Container(
@@ -45,103 +45,63 @@ class CartPage extends StatelessWidget {
                                   child: Image.network(BASE_URL +
                                       cartProvider
                                           .cartProducts[index].imageUrl)),
-                              Container(
-                                width: MediaQuery.of(context).size.width / 5,
-                                padding: EdgeInsets.all(10),
+                              Expanded(
                                 child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
                                   children: [
-                                    Text(cartProvider.cartProducts[index].name),
-                                    Column(
+                                    Container(
+                                      padding: EdgeInsets.all(10),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          Text(cartProvider
+                                              .cartProducts[index].name),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                  "Rs.${cartProvider.cartProducts[index].salePrice}"),
+                                              SizedBox(
+                                                width: 10,
+                                              ),
+                                              cartProvider.cartProducts[index]
+                                                          .mrpPrice !=
+                                                      null
+                                                  ? Text(
+                                                      "Rs.${cartProvider.cartProducts[index].mrpPrice}",
+                                                      style: TextStyle(
+                                                        fontSize: 9,
+                                                        decoration:
+                                                            TextDecoration
+                                                                .lineThrough,
+                                                      ),
+                                                    )
+                                                  : SizedBox(),
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text(cartProvider
-                                            .cartProducts[index].salePrice),
-                                        cartProvider.cartProducts[index]
-                                                    .mrpPrice !=
-                                                null
-                                            ? Text(
-                                                cartProvider.cartProducts[index]
-                                                    .mrpPrice,
-                                                style: TextStyle(
-                                                  fontSize: 9,
-                                                  decoration: TextDecoration
-                                                      .lineThrough,
-                                                ),
-                                              )
-                                            : SizedBox(),
+                                        deleteIcon(cartProviderLF, index),
+                                        Column(
+                                          children: [
+                                            measureQuantity(cartProviderLF,
+                                                index, cartProvider),
+                                            Text(
+                                                "Price: ${(double.parse(cartProvider.cartProducts[index].salePrice) * cartProvider.quantity[index]).toStringAsFixed(2)}"),
+                                          ],
+                                        ),
                                       ],
                                     )
                                   ],
                                 ),
                               ),
-                              Container(
-                                padding: EdgeInsets.only(left: 30),
-                                width: MediaQuery.of(context).size.width / 3,
-                                child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        InkWell(
-                                          onTap: () {
-                                            cartProviderLF
-                                                .decrementQuantity(index);
-                                          },
-                                          child: Container(
-                                            color: Colors.grey[400],
-                                            height: 20,
-                                            width: 20,
-                                            child: Center(
-                                              child: Text(
-                                                "-",
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Text(cartProvider
-                                              .quantity[index]
-                                              .toString()),
-                                        ),
-                                        InkWell(
-                                          onTap: () {
-                                            cartProviderLF
-                                                .incrementQuantity(index);
-                                          },
-                                          child: Container(
-                                            color: Colors.grey[400],
-                                            height: 20,
-                                            width: 20,
-                                            child: Center(
-                                              child: Text(
-                                                "+",
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                            ),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                    Text(
-                                        "Price: ${(double.parse(cartProvider.cartProducts[index].salePrice) * cartProvider.quantity[index]).toStringAsFixed(2)}"),
-                                  ],
-                                ),
-                              ),
-                              IconButton(
-                                  icon: Icon(Icons.delete),
-                                  onPressed: () {
-                                    cartProviderLF.deleteProduct(index);
-                                  })
                             ],
                           ),
                         ),
@@ -205,5 +165,56 @@ class CartPage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Row measureQuantity(Cart cartProviderLF, int index, Cart cartProvider) {
+    return Row(
+      children: [
+        InkWell(
+          onTap: () {
+            cartProviderLF.decrementQuantity(index);
+          },
+          child: Container(
+            color: Colors.grey[400],
+            height: 20,
+            width: 20,
+            child: Center(
+              child: Text(
+                "-",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(cartProvider.quantity[index].toString()),
+        ),
+        InkWell(
+          onTap: () {
+            cartProviderLF.incrementQuantity(index);
+          },
+          child: Container(
+            color: Colors.grey[400],
+            height: 20,
+            width: 20,
+            child: Center(
+              child: Text(
+                "+",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+        )
+      ],
+    );
+  }
+
+  IconButton deleteIcon(Cart cartProviderLF, int index) {
+    return IconButton(
+        icon: Icon(Icons.delete),
+        onPressed: () {
+          cartProviderLF.deleteProduct(index);
+        });
   }
 }

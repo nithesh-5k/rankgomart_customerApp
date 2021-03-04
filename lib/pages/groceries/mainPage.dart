@@ -125,6 +125,9 @@ class _GroceriesMainPageState extends State<GroceriesMainPage> {
 
   @override
   Widget build(BuildContext context) {
+    // print(
+    //     "${MediaQuery.of(context).size.height / 103.3} ${MediaQuery.of(context).size.width / 3.01} ");
+    //5.799573560767591 3.070362473347548
     return (responseBody == null ||
             responseBody1 == null ||
             responseBody2 == null ||
@@ -176,10 +179,10 @@ class _GroceriesMainPageState extends State<GroceriesMainPage> {
                 ),
                 Container(
                   height: categories.length <= 12
-                      ? (120 *
+                      ? ((MediaQuery.of(context).size.width / 3.01) *
                           ((categories.length / 3).floorToDouble() +
                               (categories.length % 3 == 0 ? 0 : 1)))
-                      : 540,
+                      : (MediaQuery.of(context).size.width / 3.01) * 4,
                   child: GridView.count(
                     physics: NeverScrollableScrollPhysics(),
                     padding: EdgeInsets.all(5),
