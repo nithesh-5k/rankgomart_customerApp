@@ -115,7 +115,17 @@ class _OrderHistoryState extends State<OrderHistory> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Container(height: 80, child: Image.network(order.image)),
+                      Container(
+                          height: 80,
+                          child: Image.network(
+                            order.image,
+                            loadingBuilder: (BuildContext context, Widget child,
+                                ImageChunkEvent loadingProgress) {
+                              return preLoaderImage(
+                                  child: child,
+                                  loadingProgress: loadingProgress);
+                            },
+                          )),
                       SizedBox(
                         height: 10,
                       ),

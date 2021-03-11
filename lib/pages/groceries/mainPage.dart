@@ -170,6 +170,13 @@ class _GroceriesMainPageState extends State<GroceriesMainPage> {
                             child: Center(
                               child: Image.network(
                                 item,
+                                loadingBuilder: (BuildContext context,
+                                    Widget child,
+                                    ImageChunkEvent loadingProgress) {
+                                  return preLoaderImage(
+                                      child: child,
+                                      loadingProgress: loadingProgress);
+                                },
                               ),
                             ),
                           ),
@@ -231,7 +238,15 @@ class _GroceriesMainPageState extends State<GroceriesMainPage> {
                       padding: EdgeInsets.all(10),
                       child: Stack(
                         children: [
-                          Image.network(BASE_URL + bannerImages[0].imageUrl),
+                          Image.network(
+                            BASE_URL + bannerImages[0].imageUrl,
+                            loadingBuilder: (BuildContext context, Widget child,
+                                ImageChunkEvent loadingProgress) {
+                              return preLoaderImage(
+                                  child: child,
+                                  loadingProgress: loadingProgress);
+                            },
+                          ),
                           Positioned(
                             top: 40,
                             right: bannerImages[0].bannerContentAlign == "lhs"
@@ -314,7 +329,15 @@ class _GroceriesMainPageState extends State<GroceriesMainPage> {
                       padding: EdgeInsets.all(10),
                       child: Stack(
                         children: [
-                          Image.network(BASE_URL + bannerImages[1].imageUrl),
+                          Image.network(
+                            BASE_URL + bannerImages[1].imageUrl,
+                            loadingBuilder: (BuildContext context, Widget child,
+                                ImageChunkEvent loadingProgress) {
+                              return preLoaderImage(
+                                  child: child,
+                                  loadingProgress: loadingProgress);
+                            },
+                          ),
                           Positioned(
                             top: 40,
                             right: bannerImages[1].bannerContentAlign == "lhs"

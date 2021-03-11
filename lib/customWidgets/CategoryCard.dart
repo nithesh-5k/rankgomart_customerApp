@@ -35,7 +35,16 @@ class CategoryCard extends StatelessWidget {
             ]),
         child: Column(
           children: [
-            Expanded(child: Image.network(BASE_URL + category.imageUrl)),
+            Expanded(
+              child: Image.network(
+                BASE_URL + category.imageUrl,
+                loadingBuilder: (BuildContext context, Widget child,
+                    ImageChunkEvent loadingProgress) {
+                  return preLoaderImage(
+                      child: child, loadingProgress: loadingProgress);
+                },
+              ),
+            ),
             Text(
               category.categoryName,
               textAlign: TextAlign.center,

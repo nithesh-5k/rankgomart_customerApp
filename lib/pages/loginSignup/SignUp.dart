@@ -55,27 +55,34 @@ class SignUpScreen extends StatelessWidget {
                   child: FlatButton(
                       color: Theme.of(context).accentColor,
                       onPressed: () async {
-                        if (pass != cPass) {
+                        final alphabets = RegExp(r'^[a-zA-Z\s\.]+$');
+                        if (!alphabets.hasMatch(uname)) {
                           _scaffoldKey.currentState.showSnackBar(SnackBar(
-                            content:
-                                Text("Enter correct password in both fields!!"),
+                            content: Text("Enter valid name!"),
                           ));
                         } else {
-                          if (uname == null || phno == null || pass == null) {
+                          if (pass != cPass) {
                             _scaffoldKey.currentState.showSnackBar(SnackBar(
-                              content: Text("Every data in every fields"),
+                              content: Text(
+                                  "Enter correct password in both fields!!"),
                             ));
                           } else {
-                            String temp = await signUp(context);
-                            if (temp == "Sucessfully registered") {
-                              Future.delayed(Duration(seconds: 1), () {
-                                Navigator.pop(context);
-                                Navigator.pop(context);
-                              });
+                            if (uname == null || phno == null || pass == null) {
+                              _scaffoldKey.currentState.showSnackBar(SnackBar(
+                                content: Text("Every data in every fields"),
+                              ));
+                            } else {
+                              String temp = await signUp(context);
+                              if (temp == "Sucessfully registered") {
+                                Future.delayed(Duration(seconds: 1), () {
+                                  Navigator.pop(context);
+                                  Navigator.pop(context);
+                                });
+                              }
+                              _scaffoldKey.currentState.showSnackBar(SnackBar(
+                                content: Text(temp),
+                              ));
                             }
-                            _scaffoldKey.currentState.showSnackBar(SnackBar(
-                              content: Text(temp),
-                            ));
                           }
                         }
                       },

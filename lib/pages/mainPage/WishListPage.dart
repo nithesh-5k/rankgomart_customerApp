@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
+import 'package:mart/const.dart';
 import 'package:mart/customWidgets/CustomAppBar.dart';
 import 'package:mart/model/Wishlist.dart';
 import 'package:mart/pages/groceries/productPage.dart';
@@ -16,7 +17,7 @@ class WishListPage extends StatefulWidget {
 
 class _WishListPageState extends State<WishListPage> {
   var responseBody;
-  List<WishList> wishlist = [];
+  List<WishList> wishList;
 
   Future<void> getWishList() async {
     Map<String, String> body = {
@@ -28,11 +29,11 @@ class _WishListPageState extends State<WishListPage> {
     if (responseBody['success'] == null ? false : responseBody['success']) {
       if (responseBody['items']['itemList'] != "No Data Found") {
         setState(() {
-          wishlist = wishListFromJson(responseBody['items']['itemList']);
+          wishList = wishListFromJson(responseBody['items']['itemList']);
         });
       } else {
         setState(() {
-          wishlist.clear();
+          wishList.clear();
         });
       }
     } else {
@@ -52,15 +53,11 @@ class _WishListPageState extends State<WishListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(title: "Wish List", context: context),
-      body: responseBody == null
-          ? wishlist.length == 0
-              ? Center(
-                  child: Text("No items available"),
-                )
-              : Center(
-                  child: CircularProgressIndicator(),
-                )
-          : wishlist.length == 0
+      body: responseBody == null || wishList == null
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : wishList.length == 0
               ? Center(
                   child: Text("No item available"),
                 )
@@ -69,7 +66,7 @@ class _WishListPageState extends State<WishListPage> {
                     return GestureDetector(
                       onTap: () {
                         Navigator.pushNamed(context, ProductPage.routeName,
-                            arguments: wishlist[index].productId);
+                            arguments: wishList[index].productId);
                       },
                       child: Container(
                         margin:
@@ -87,8 +84,16 @@ class _WishListPageState extends State<WishListPage> {
                                 Container(
                                     height: 130,
                                     child: Image.network(
-                                        wishlist[index].imageUrl)),
-                                Text(wishlist[index].productName),
+                                      wishList[index].imageUrl,
+                                      loadingBuilder: (BuildContext context,
+                                          Widget child,
+                                          ImageChunkEvent loadingProgress) {
+                                        return preLoaderImage(
+                                            child: child,
+                                            loadingProgress: loadingProgress);
+                                      },
+                                    )),
+                                Text(wishList[index].productName),
                               ],
                             ),
                             Positioned(
@@ -96,7 +101,7 @@ class _WishListPageState extends State<WishListPage> {
                               right: -25,
                               child: IconButton(
                                 onPressed: () {
-                                  deleteItem(wishlist[index].productId);
+                                  deleteItem(wishList[index].productId);
                                 },
                                 padding: EdgeInsets.all(20),
                                 icon: Icon(Icons.delete),
@@ -107,7 +112,7 @@ class _WishListPageState extends State<WishListPage> {
                       ),
                     );
                   },
-                  itemCount: wishlist.length,
+                  itemCount: wishList.length,
                 ),
     );
   }

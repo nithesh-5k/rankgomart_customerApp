@@ -7,7 +7,17 @@ import 'package:mart/const.dart';
 import 'package:mart/services/request.dart';
 
 class Data {
-  static String otp, paginationLimit, paginationStart, distancePrice, minKm;
+  static String otp,
+      paginationLimit,
+      paginationStart,
+      distancePrice,
+      minKm,
+      maxKm,
+      upiID,
+      serviceError,
+      message,
+      paymentMsg;
+
   static getAPIData() async {
     var responseBody;
     Map<String, String> body = {"custom_data": "getapidata"};
@@ -39,6 +49,21 @@ class Data {
             }
             if (element[key] == "Otp Check") {
               otp = element["dataValue"];
+            }
+            if (element[key] == "Maximun km") {
+              maxKm = element["dataValue"];
+            }
+            if (element[key] == "UPI id") {
+              upiID = element["dataValue"];
+            }
+            if (element[key] == "Service Error") {
+              serviceError = element["dataValue"];
+            }
+            if (element[key] == "Message") {
+              message = element["dataValue"];
+            }
+            if (element[key] == "Payment msg") {
+              paymentMsg = element["dataValue"];
             }
           }
         });

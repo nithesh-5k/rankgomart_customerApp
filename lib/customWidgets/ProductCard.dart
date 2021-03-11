@@ -31,10 +31,18 @@ class ProductCard extends StatelessWidget {
         child: Column(
           children: [
             Container(
-                height: 130, child: Image.network(BASE_URL + product.imageUrl)),
+                height: 130,
+                child: Image.network(
+                  BASE_URL + product.imageUrl,
+                  loadingBuilder: (BuildContext context, Widget child,
+                      ImageChunkEvent loadingProgress) {
+                    return preLoaderImage(
+                        child: child, loadingProgress: loadingProgress);
+                  },
+                )),
             Expanded(
               child: Container(
-                padding: EdgeInsets.all(10),
+                padding: EdgeInsets.all(2),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceAround,

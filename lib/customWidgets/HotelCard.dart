@@ -33,7 +33,15 @@ class HotelCard extends StatelessWidget {
             ]),
         child: Column(
           children: [
-            Expanded(child: Image.network(BASE_URL + hotel.sellerHotelImage)),
+            Expanded(
+                child: Image.network(
+              BASE_URL + hotel.sellerHotelImage,
+              loadingBuilder: (BuildContext context, Widget child,
+                  ImageChunkEvent loadingProgress) {
+                return preLoaderImage(
+                    child: child, loadingProgress: loadingProgress);
+              },
+            )),
             SizedBox(
               height: 10,
             ),

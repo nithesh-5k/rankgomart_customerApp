@@ -87,7 +87,7 @@ class _UserProfileState extends State<UserProfile> {
                         color: Colors.transparent,
                         child: Text(
                           "Edit user name",
-                          style: TextStyle(color: kBlue),
+                          style: TextStyle(color: kBlue, fontSize: 20),
                         ),
                       ),
                     ),

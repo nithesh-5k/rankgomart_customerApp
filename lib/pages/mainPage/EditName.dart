@@ -15,9 +15,10 @@ class _EditNameState extends State<EditName> {
   var userProvider;
   String name;
 
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     userProvider = Provider.of<User>(context, listen: false);
     name = userProvider.user.customerName;
@@ -26,6 +27,7 @@ class _EditNameState extends State<EditName> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: CustomAppBar(context: context, title: "Edit Name"),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -50,12 +52,19 @@ class _EditNameState extends State<EditName> {
               child: FlatButton(
                 color: kBlue,
                 onPressed: () {
-                  if (name.length != 0) {
-                    changeName();
+                  final alphabets = RegExp(r'^[a-zA-Z\s\.]+$');
+                  if (!alphabets.hasMatch(name)) {
+                    _scaffoldKey.currentState.showSnackBar(SnackBar(
+                      content: Text("Enter valid name!"),
+                    ));
+                  } else {
+                    if (name.length != 0) {
+                      changeName();
+                    }
                   }
                 },
                 child: Text(
-                  "Save name",
+                  "Submit",
                   style: TextStyle(color: Colors.white),
                 ),
               ),

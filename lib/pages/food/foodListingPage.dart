@@ -71,7 +71,15 @@ class _FoodListingPageState extends State<FoodListingPage> {
                                 height: 80,
                                 width: 80,
                                 child: Image.network(
-                                    BASE_URL + items[index].imageUrl)),
+                                  BASE_URL + items[index].imageUrl,
+                                  loadingBuilder: (BuildContext context,
+                                      Widget child,
+                                      ImageChunkEvent loadingProgress) {
+                                    return preLoaderImage(
+                                        child: child,
+                                        loadingProgress: loadingProgress);
+                                  },
+                                )),
                           ),
                           Expanded(
                             child: Padding(

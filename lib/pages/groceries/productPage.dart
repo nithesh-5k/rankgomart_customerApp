@@ -79,8 +79,15 @@ class _ProductPageState extends State<ProductPage> {
                       Container(
                           height: MediaQuery.of(context).size.height / 2,
                           child: Center(
-                              child:
-                                  Image.network(BASE_URL + product.imageUrl))),
+                              child: Image.network(
+                            BASE_URL + product.imageUrl,
+                            loadingBuilder: (BuildContext context, Widget child,
+                                ImageChunkEvent loadingProgress) {
+                              return preLoaderImage(
+                                  child: child,
+                                  loadingProgress: loadingProgress);
+                            },
+                          ))),
                       Text(
                         product.name,
                         style: TextStyle(fontSize: 25),

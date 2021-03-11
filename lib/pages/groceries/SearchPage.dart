@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mart/const.dart';
 import 'package:mart/customWidgets/CustomAppBar.dart';
 import 'package:mart/model/Item/SearchItem.dart';
 import 'package:mart/pages/groceries/productPage.dart';
@@ -98,6 +99,16 @@ class _SearchPageState extends State<SearchPage> {
                                           flex: 1,
                                           child: Image.network(
                                             searchItems[index].imageUrl,
+                                            loadingBuilder:
+                                                (BuildContext context,
+                                                    Widget child,
+                                                    ImageChunkEvent
+                                                        loadingProgress) {
+                                              return preLoaderImage(
+                                                  child: child,
+                                                  loadingProgress:
+                                                      loadingProgress);
+                                            },
                                             height: 60,
                                           ),
                                         ),

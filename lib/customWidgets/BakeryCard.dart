@@ -35,7 +35,15 @@ class BakeryCard extends StatelessWidget {
             ]),
         child: Column(
           children: [
-            Expanded(child: Image.network(BASE_URL + bakery.sellerBakeryImage)),
+            Expanded(
+                child: Image.network(
+              BASE_URL + bakery.sellerBakeryImage,
+              loadingBuilder: (BuildContext context, Widget child,
+                  ImageChunkEvent loadingProgress) {
+                return preLoaderImage(
+                    child: child, loadingProgress: loadingProgress);
+              },
+            )),
             SizedBox(
               height: 10,
             ),

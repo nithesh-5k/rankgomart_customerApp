@@ -64,7 +64,8 @@ class _OrderPageState extends State<OrderPage> {
       if (distance <= int.parse(Data.minKm)) {
         distancePrice = 0;
       } else {
-        if (distance > int.parse(Data.minKm) && distance <= 10) {
+        if (distance > int.parse(Data.minKm) &&
+            distance <= int.parse(Data.maxKm)) {
           distancePrice = (distance - int.parse(Data.minKm)) *
               int.parse(Data.distancePrice);
         } else {
@@ -73,6 +74,37 @@ class _OrderPageState extends State<OrderPage> {
       }
       // }
     }
+
+    String address1 = "", address2 = "";
+
+    if (Provider.of<GPS>(context, listen: false).placemark != null) {
+      address1 = Provider.of<GPS>(context, listen: false).placemark.street;
+      if (Provider.of<GPS>(context, listen: false).placemark.street !=
+          Provider.of<GPS>(context, listen: false).placemark.name) {
+        address1 = address1 +
+            ", " +
+            Provider.of<GPS>(context, listen: false).placemark.name;
+      }
+
+      address2 = Provider.of<GPS>(context, listen: false).placemark.subLocality;
+      if (Provider.of<GPS>(context, listen: false).placemark.subLocality !=
+          Provider.of<GPS>(context, listen: false).placemark.locality) {
+        address2 = address2 +
+            ", " +
+            Provider.of<GPS>(context, listen: false).placemark.locality;
+      }
+      if (Provider.of<GPS>(context, listen: false)
+              .placemark
+              .subAdministrativeArea !=
+          Provider.of<GPS>(context, listen: false).placemark.locality) {
+        address2 = address2 +
+            ", " +
+            Provider.of<GPS>(context, listen: false)
+                .placemark
+                .subAdministrativeArea;
+      }
+    }
+
     return distanceRejected
         ? Scaffold(
             body: Container(
@@ -98,7 +130,7 @@ class _OrderPageState extends State<OrderPage> {
                         border: Border.all(color: Colors.grey),
                         borderRadius: BorderRadius.circular(5)),
                     child: Text(
-                      "Sorry! This order cannot be placed at this location.",
+                      Data.serviceError,
                       style: kHeading,
                       textAlign: TextAlign.center,
                     ),
@@ -223,10 +255,24 @@ class _OrderPageState extends State<OrderPage> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
+                                        Text("\t" * 3 + address1 + ","),
+                                        Text("\t" * 3 + address2 + ","),
                                         Text("\t" * 3 +
-                                            Provider.of<GPS>(context).street),
-                                        Text("\t" * 3 + "Sivagangai"),
-                                        Text("\t" * 3 + "Tamilnadu")
+                                            Provider.of<GPS>(context,
+                                                    listen: false)
+                                                .placemark
+                                                .administrativeArea +
+                                            ", " +
+                                            Provider.of<GPS>(context,
+                                                    listen: false)
+                                                .placemark
+                                                .country +
+                                            " - " +
+                                            Provider.of<GPS>(context,
+                                                    listen: false)
+                                                .placemark
+                                                .postalCode +
+                                            ".")
                                       ],
                                     ),
                                     // InkWell(
@@ -318,45 +364,51 @@ class _OrderPageState extends State<OrderPage> {
                                     ),
                                     Row(
                                       children: [
-                                        Expanded(child: Text("Items")),
                                         Expanded(
-                                          child: Text("Rs." +
-                                              Provider.of<Cart>(context)
-                                                  .totalPrice()
-                                                  .toString()),
-                                        )
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Row(
-                                      children: [
-                                        Expanded(child: Text("Delivery")),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text("Items"),
+                                              Text("Delivery"),
+                                              Text("Total")
+                                            ],
+                                          ),
+                                        ),
                                         Expanded(
-                                          child: Text("Rs." +
-                                              distancePrice.toString() +
-                                              ".00"),
-                                        )
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Row(
-                                      children: [
-                                        Expanded(child: Text("Total")),
-                                        Expanded(
-                                          child: Text(
-                                            "Rs." +
-                                                (Provider.of<Cart>(context)
-                                                            .totalPrice() +
-                                                        distancePrice)
-                                                    .toString(),
+                                          child: Row(
+                                            children: [
+                                              Column(
+                                                children: [
+                                                  Text("Rs. "),
+                                                  Text("Rs. "),
+                                                  Text("Rs. ")
+                                                ],
+                                              ),
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.end,
+                                                children: [
+                                                  Text(
+                                                      Provider.of<Cart>(context)
+                                                          .totalPrice()
+                                                          .toStringAsFixed(2)),
+                                                  Text(
+                                                      distancePrice.toString() +
+                                                          ".00"),
+                                                  Text(
+                                                    (Provider.of<Cart>(context)
+                                                                .totalPrice() +
+                                                            distancePrice)
+                                                        .toStringAsFixed(2),
+                                                  ),
+                                                ],
+                                              )
+                                            ],
                                           ),
                                         )
                                       ],
-                                    )
+                                    ),
                                   ],
                                 ),
                               )
@@ -439,10 +491,10 @@ class _OrderPageState extends State<OrderPage> {
   Future<UpiResponse> initiateTransaction(UpiApp app) async {
     return _upiIndia.startTransaction(
       app: UpiApp.googlePay,
-      receiverUpiId: "7708709733@okbizaxis",
-      receiverName: 'RankgoMart',
-      transactionRefId: 'Testing_UPI',
-      transactionNote: 'Thanks for shopping at RankgoMart',
+      receiverUpiId: Data.upiID,
+      receiverName: Data.paymentMsg,
+      transactionRefId: 'UPI',
+      transactionNote: Data.message,
       amount: Provider.of<Cart>(context, listen: false).totalPrice() +
           distancePrice,
     );
@@ -592,11 +644,24 @@ class _OrderPageState extends State<OrderPage> {
       "orderCustomerRefId": userProvider.userId,
       "customerAddressRefId": [
         {
-          "customerAddress": Provider.of<GPS>(context, listen: false).street,
-          "customerCountryId": "6197",
-          "customerStateId": "753",
-          "customerCityId": "100",
-          "customerPincode": "630551"
+          "custStreet":
+              Provider.of<GPS>(context, listen: false).placemark.street,
+          "custStrName":
+              Provider.of<GPS>(context, listen: false).placemark.name,
+          "custSubLocality":
+              Provider.of<GPS>(context, listen: false).placemark.subLocality,
+          "custLocality":
+              Provider.of<GPS>(context, listen: false).placemark.locality,
+          "custSubAdmin": Provider.of<GPS>(context, listen: false)
+              .placemark
+              .subAdministrativeArea,
+          "custAdmin": Provider.of<GPS>(context, listen: false)
+              .placemark
+              .administrativeArea,
+          "custPostal":
+              Provider.of<GPS>(context, listen: false).placemark.postalCode,
+          "customerCountry":
+              Provider.of<GPS>(context, listen: false).placemark.country
         }
       ],
       "paymentMode": selected == Payment.gpay ? "GooglePay" : "cod",
@@ -629,11 +694,24 @@ class _OrderPageState extends State<OrderPage> {
       "orderCustomerRefId": userProvider.userId,
       "customerAddressRefId": [
         {
-          "customerAddress": Provider.of<GPS>(context, listen: false).street,
-          "customerCountryId": "6197",
-          "customerStateId": "753",
-          "customerCityId": "100",
-          "customerPincode": "630551"
+          "custStreet":
+              Provider.of<GPS>(context, listen: false).placemark.street,
+          "custStrName":
+              Provider.of<GPS>(context, listen: false).placemark.name,
+          "custSubLocality":
+              Provider.of<GPS>(context, listen: false).placemark.subLocality,
+          "custLocality":
+              Provider.of<GPS>(context, listen: false).placemark.locality,
+          "custSubAdmin": Provider.of<GPS>(context, listen: false)
+              .placemark
+              .subAdministrativeArea,
+          "custAdmin": Provider.of<GPS>(context, listen: false)
+              .placemark
+              .administrativeArea,
+          "custPostal":
+              Provider.of<GPS>(context, listen: false).placemark.postalCode,
+          "customerCountry":
+              Provider.of<GPS>(context, listen: false).placemark.country
         }
       ],
       "paymentMode": selected == Payment.gpay ? "GooglePay" : "cod",
@@ -666,11 +744,24 @@ class _OrderPageState extends State<OrderPage> {
       "orderCustomerRefId": userProvider.userId,
       "customerAddressRefId": [
         {
-          "customerAddress": Provider.of<GPS>(context, listen: false).street,
-          "customerCountryId": "6197",
-          "customerStateId": "753",
-          "customerCityId": "100",
-          "customerPincode": "630551"
+          "custStreet":
+              Provider.of<GPS>(context, listen: false).placemark.street,
+          "custStrName":
+              Provider.of<GPS>(context, listen: false).placemark.name,
+          "custSubLocality":
+              Provider.of<GPS>(context, listen: false).placemark.subLocality,
+          "custLocality":
+              Provider.of<GPS>(context, listen: false).placemark.locality,
+          "custSubAdmin": Provider.of<GPS>(context, listen: false)
+              .placemark
+              .subAdministrativeArea,
+          "custAdmin": Provider.of<GPS>(context, listen: false)
+              .placemark
+              .administrativeArea,
+          "custPostal":
+              Provider.of<GPS>(context, listen: false).placemark.postalCode,
+          "customerCountry":
+              Provider.of<GPS>(context, listen: false).placemark.country
         }
       ],
       "paymentMode": selected == Payment.gpay ? "GooglePay" : "cod",

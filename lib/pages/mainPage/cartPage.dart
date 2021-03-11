@@ -42,9 +42,18 @@ class CartPage extends StatelessWidget {
                               Container(
                                   width: MediaQuery.of(context).size.width / 3 -
                                       20,
-                                  child: Image.network(BASE_URL +
-                                      cartProvider
-                                          .cartProducts[index].imageUrl)),
+                                  child: Image.network(
+                                    BASE_URL +
+                                        cartProvider
+                                            .cartProducts[index].imageUrl,
+                                    loadingBuilder: (BuildContext context,
+                                        Widget child,
+                                        ImageChunkEvent loadingProgress) {
+                                      return preLoaderImage(
+                                          child: child,
+                                          loadingProgress: loadingProgress);
+                                    },
+                                  )),
                               Expanded(
                                 child: Column(
                                   children: [
@@ -119,8 +128,8 @@ class CartPage extends StatelessWidget {
               children: [
                 Expanded(
                     child: Center(
-                        child:
-                            Text("Total Price: ${cartProvider.totalPrice()}"))),
+                        child: Text(
+                            "Total Price: ${cartProvider.totalPrice().toStringAsFixed(2)}"))),
                 Expanded(
                   child: GestureDetector(
                     onTap: () {

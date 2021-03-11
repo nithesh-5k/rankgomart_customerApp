@@ -6,7 +6,7 @@ class GPS extends ChangeNotifier {
   LatLng fixed, grocery, current;
   bool flag = false;
   int distance;
-  String street;
+  Placemark placemark;
 
   void setFixed({double latitude, double longitude}) {
     fixed = new LatLng(latitude: latitude, longitude: longitude);
@@ -33,8 +33,8 @@ class GPS extends ChangeNotifier {
   Future<void> getAddress() async {
     List<Placemark> placemarks =
         await placemarkFromCoordinates(current.latitude, current.longitude);
-    Placemark placeMark = placemarks[0];
-    street = placeMark.street + " " + placeMark.locality;
+    placemark = placemarks[0];
+    // placemark = placeMark.street + " " + placeMark.locality;
   }
 
   Future<LatLng> getLocation() async {
